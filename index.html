@@ -1,229 +1,364 @@
-<h2 class="sr-only">Lịch trình Vinpearl Nha Trang v3 — King's Garden chiều thứ 5, World Garden sáng thứ 6, bỏ vòng quay</h2>
+<h2 class="sr-only">Lịch trình Vinpearl Nha Trang với thời gian đi bộ giữa các khu</h2>
 <style>
-.day-label{font-size:18px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px;}
-.day-sub{font-size:13px;color:var(--color-text-secondary);margin:0 0 16px;}
-.timeline{position:relative;padding-left:28px;margin:0 0 2rem;}
-.timeline::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:1.5px;background:var(--color-border-tertiary);}
-.item{position:relative;margin-bottom:18px;}
-.dot{position:absolute;left:-28px;top:4px;width:18px;height:18px;border-radius:50%;}
-.dot-show{background:#EEEDFE;border:1.5px solid #534AB7;}
-.dot-visit{background:#E1F5EE;border:1.5px solid #0F6E56;}
-.dot-food{background:#FAEEDA;border:1.5px solid #854F0B;}
-.dot-hotel{background:#E6F1FB;border:1.5px solid #185FA5;}
-.dot-move{background:#F1EFE8;border:1.5px solid #5F5E5A;}
-.time-badge{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:2px;}
-.item-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0;}
-.item-desc{font-size:13px;color:var(--color-text-secondary);margin:2px 0 0;line-height:1.5;}
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 1.5rem;padding:12px 16px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary);}
-.legend-dot{width:10px;height:10px;border-radius:50%;}
-.note-box{background:var(--color-background-info);border-radius:var(--border-radius-md);padding:12px 16px;margin:0 0 1.5rem;font-size:13px;color:var(--color-text-info);line-height:1.6;}
-.tab-row{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1.5px solid var(--color-border-tertiary);}
-.tab{padding:8px 20px;font-size:14px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;}
-.tab.active{color:#534AB7;border-bottom-color:#534AB7;}
-.tab:hover{color:var(--color-text-primary);}
-.day-panel{display:none;}
-.day-panel.active{display:block;}
-.changed{background:linear-gradient(90deg,rgba(83,74,183,0.06) 0%,transparent 100%);border-radius:var(--border-radius-md);padding:6px 8px;margin:-6px -8px;}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:var(--color-background-primary);--bg2:var(--color-background-secondary);--t1:var(--color-text-primary);--t2:var(--color-text-secondary);--t3:var(--color-text-tertiary);--bd:var(--color-border-tertiary);--r:12px;--show:#7F77DD;--show-bg:#EEEDFE;--show-t:#3C3489;--visit:#1D9E75;--visit-bg:#E1F5EE;--visit-t:#085041;--food:#BA7517;--food-bg:#FAEEDA;--food-t:#633806;--hotel:#378ADD;--hotel-bg:#E6F1FB;--hotel-t:#0C447C;--move:#888780;--move-bg:#F1EFE8;--move-t:#444441;--walk-bg:#F1EFE8;--walk-t:#5F5E5A;}
+body{font-family:'DM Sans',var(--font-sans);background:transparent;color:var(--t1);}
+.tabs{display:flex;gap:4px;padding:4px;background:var(--bg2);border-radius:var(--r);margin-bottom:16px;}
+.tab-btn{flex:1;padding:10px 0;border:none;background:transparent;font-family:inherit;font-size:14px;font-weight:500;color:var(--t2);border-radius:8px;cursor:pointer;transition:all .2s;}
+.tab-btn.active{background:var(--bg);color:var(--t1);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.day{display:none;}.day.active{display:block;}
+.day-header{margin-bottom:14px;}
+.day-title{font-size:17px;font-weight:600;color:var(--t1);letter-spacing:-.02em;}
+.day-desc{font-size:13px;color:var(--t2);line-height:1.4;margin-top:2px;}
+
+.card{border:0.5px solid var(--bd);border-radius:var(--r);margin-bottom:0;overflow:hidden;}
+.card-inner{display:flex;gap:12px;padding:14px 14px 14px 12px;align-items:flex-start;}
+.icon-col{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.icon-show{background:var(--show-bg);}.icon-visit{background:var(--visit-bg);}.icon-food{background:var(--food-bg);}.icon-hotel{background:var(--hotel-bg);}.icon-move{background:var(--move-bg);}
+.card-body{flex:1;min-width:0;}
+.card-time{font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px;}
+.time-show{color:var(--show-t);}.time-visit{color:var(--visit-t);}.time-food{color:var(--food-t);}.time-hotel{color:var(--hotel-t);}.time-move{color:var(--move-t);}
+.card-title{font-size:14px;font-weight:500;color:var(--t1);line-height:1.35;margin-bottom:3px;}
+.card-desc{font-size:12.5px;color:var(--t2);line-height:1.55;}
+.show-badge{display:inline-block;background:var(--show-bg);color:var(--show-t);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:middle;letter-spacing:.03em;}
+
+.walk{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 12px;margin:0;background:transparent;}
+.walk-line{width:36px;display:flex;justify-content:center;flex-shrink:0;}
+.walk-line-inner{width:1.5px;height:28px;background:var(--bd);position:relative;}
+.walk-dot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:var(--walk-t);opacity:.35;}
+.walk-info{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--walk-t);font-weight:500;}
+.walk-icon{width:14px;height:14px;opacity:.6;}
+.walk-route{font-weight:400;color:var(--t3);font-size:11px;}
+
+.section-divider{display:flex;align-items:center;gap:10px;margin:16px 0 10px;font-size:11px;font-weight:500;color:var(--t3);letter-spacing:.05em;text-transform:uppercase;}
+.section-divider::after{content:'';flex:1;height:0.5px;background:var(--bd);}
+
+.legend-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.leg{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
+.leg-show{background:var(--show-bg);color:var(--show-t);}
+.leg-visit{background:var(--visit-bg);color:var(--visit-t);}
+.leg-food{background:var(--food-bg);color:var(--food-t);}
+.leg-hotel{background:var(--hotel-bg);color:var(--hotel-t);}
+
+.info-card{background:var(--bg2);border-radius:var(--r);padding:14px 16px;margin-top:16px;font-size:12.5px;color:var(--t2);line-height:1.65;}
+.info-card strong{font-weight:500;color:var(--t1);}
+.info-item{padding-left:12px;position:relative;margin-top:4px;}
+.info-item::before{content:'';position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--t3);}
+
+.total-walk{display:inline-flex;align-items:center;gap:5px;background:var(--move-bg);color:var(--move-t);font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;margin-left:6px;}
 </style>
 
-<div style="padding:1rem 0;">
-<div class="tab-row">
-  <button class="tab active" onclick="showDay(0)">Thứ 5</button>
-  <button class="tab" onclick="showDay(1)">Sáng thứ 6</button>
+<div style="padding:.5rem 0;max-width:480px;">
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchDay(0)">Thứ 5</button>
+  <button class="tab-btn" onclick="switchDay(1)">Sáng thứ 6</button>
 </div>
 
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#EEEDFE;border:1px solid #534AB7;"></div>Show diễn</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#E1F5EE;border:1px solid #0F6E56;"></div>Tham quan</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#FAEEDA;border:1px solid #854F0B;"></div>Ăn uống</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#E6F1FB;border:1px solid #185FA5;"></div>Khách sạn</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#F1EFE8;border:1px solid #5F5E5A;"></div>Di chuyển</div>
-  <div class="legend-item" style="margin-left:auto;"><span style="display:inline-block;width:10px;height:10px;background:rgba(83,74,183,0.12);border-radius:2px;"></span>Đã sửa</div>
+<div class="legend-bar">
+  <span class="leg leg-show">Show diễn</span>
+  <span class="leg leg-visit">Tham quan</span>
+  <span class="leg leg-food">Ăn uống</span>
+  <span class="leg leg-hotel">Khách sạn</span>
+  <span class="total-walk"><svg viewBox="0 0 14 14" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1v12M4 4l3-3 3 3"/></svg>Tổng đi bộ: ~70 phút</span>
 </div>
 
-<div class="day-panel active" id="day0">
-<p class="day-label">Thứ 5 — Ngày khám phá trọn vẹn</p>
-<p class="day-sub">Thủy cung + show sáng → King's Garden chiều → Show đêm</p>
+<!-- ======= THỨ 5 ======= -->
+<div class="day active" id="d0">
 
-<div class="timeline">
-
-<div class="item"><div class="dot dot-move"></div>
-<div class="time-badge">07:00 – 08:15</div>
-<p class="item-title">Ăn sáng & di chuyển ra bến cáp treo</p>
-<p class="item-desc">Ăn sáng tại thành phố, sau đó taxi/Grab đến ga cáp treo Vinpearl (Cầu Đá). Cáp treo mở từ 8:30.</p>
+<div class="day-header">
+  <div class="day-title">Thứ 5</div>
+  <div class="day-desc">Thủy cung + show sáng → King's Garden chiều → Show đêm</div>
 </div>
 
-<div class="item"><div class="dot dot-move"></div>
-<div class="time-badge">08:30 – 09:00</div>
-<p class="item-title">Cáp treo vượt biển → Hòn Tre</p>
-<p class="item-desc">Trải nghiệm cáp treo 3,3km ngắm toàn cảnh vịnh Nha Trang. Tới đảo, gửi hành lý tại quầy.</p>
-</div>
+<div class="section-divider">Sáng</div>
 
-<div class="item"><div class="dot dot-visit"></div>
-<div class="time-badge">09:00 – 09:25</div>
-<p class="item-title">Neptune's Kingdom — Vào thủy cung sớm</p>
-<p class="item-desc">Đi thẳng đến Vương Quốc Hải Thần. Khám phá hầm kính 360° dài 100m, hồ hải cẩu. Chọn vị trí đẹp trước bể chính.</p>
-</div>
-
-<div class="item"><div class="dot dot-show"></div>
-<div class="time-badge">09:30 – 09:45</div>
-<p class="item-title">Show Nàng Tiên Cá</p>
-<p class="item-desc">Vũ điệu dưới nước của các mỹ nhân ngư. 10 phút biểu diễn ấn tượng, check-in chụp ảnh cùng tiên cá sau show.</p>
-</div>
-
-<div class="item"><div class="dot dot-show"></div>
-<div class="time-badge">10:00 – 10:15</div>
-<p class="item-title">Show cho cá ăn — Cung Điện Hải Vương</p>
-<p class="item-desc">Ngắm thợ lặn cho hơn 30.000 sinh vật biển ăn giữa lòng đại dương. Diễn ngay sau show tiên cá.</p>
-</div>
-
-<div class="item"><div class="dot dot-visit"></div>
-<div class="time-badge">10:15 – 11:00</div>
-<p class="item-title">Tiếp tục tham quan thủy cung</p>
-<p class="item-desc">5 khu triển lãm: Royal Palace (cá rồng, Arapaima), Ocean Garden (cá Nemo), khu bò sát. Tổng diện tích gần 4.000m².</p>
-</div>
-
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">11:00 – 12:00</div>
-<p class="item-title">Fairy Land — Khu cổ tích nhẹ nhàng</p>
-<p class="item-desc">Carousel, rạp phim 4D, không gian cổ tích chụp ảnh. Dạo chơi thong thả trước giờ ăn trưa. Bỏ qua trò cảm giác mạnh.</p>
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-move"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M15 6l6 6-6 6"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-move">07:00 – 08:15</div>
+    <div class="card-title">Ăn sáng & di chuyển ra cáp treo</div>
+    <div class="card-desc">Ăn sáng tại thành phố, taxi/Grab đến ga cáp treo Cầu Đá.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-food"></div>
-<div class="time-badge">12:00 – 13:15</div>
-<p class="item-title">Ăn trưa — Nhà hàng Coral (buffet)</p>
-<p class="item-desc">Buffet Á-Âu trong VinWonders, phục vụ 11h–14h30. Hoặc chọn Cơm Nhà Linh (cơm Việt trên mâm đồng) nếu thích món nhà.</p>
-</div>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17l4-10 4 6 4-8 4 12"/></svg>12 phút cáp treo</div></div>
 
-<div class="item"><div class="dot dot-hotel"></div>
-<div class="time-badge">13:30 – 14:30</div>
-<p class="item-title">Check-in khách sạn Vinpearl</p>
-<p class="item-desc">Di chuyển về resort, làm thủ tục nhận phòng 14h. Nghỉ ngơi, tắm rửa, nạp năng lượng cho buổi chiều-tối.</p>
-</div>
-
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">14:45 – 15:00</div>
-<p class="item-title">Di chuyển đến King's Garden</p>
-<p class="item-desc">Đi từ resort đến khu Vườn Quý Vương, chuẩn bị vị trí xem show chim buổi chiều.</p>
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-move"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round"><path d="M4 17l4-10 4 6 4-8 4 12"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-move">08:30 – 08:42</div>
+    <div class="card-title">Cáp treo vượt biển → Hòn Tre</div>
+    <div class="card-desc">Cáp treo 3,3km ngắm vịnh Nha Trang. Gửi hành lý tại quầy.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-show"></div>
-<div class="changed">
-<div class="time-badge">15:00 – 15:20</div>
-<p class="item-title">Show biểu diễn chim — Vườn Quý Vương</p>
-<p class="item-desc">10 tiết mục với các loài chim quý hiếm. Suất chiều 15h thường vắng hơn suất sáng, dễ chọn chỗ đẹp.</p>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~12 phút <span class="walk-route">Ga cáp treo → qua Harbour → cổng VinWonders → Sea World</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">09:00 – 09:25</div>
+    <div class="card-title">Neptune's Kingdom — Vào thủy cung</div>
+    <div class="card-desc">Hầm kính 360° dài 100m, hồ hải cẩu. Chọn vị trí đẹp trước bể chính.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">15:20 – 16:20</div>
-<p class="item-title">King's Garden — Vườn thú mở</p>
-<p class="item-desc">Gặp hươu cao cổ, hồng hạc, hổ Bengal, hà mã. Cho hươu cao cổ ăn — trải nghiệm không nên bỏ lỡ. Chiều mát, động vật cũng hoạt bát hơn.</p>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info">Ở nguyên tại thủy cung — cùng địa điểm</div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-show"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><path d="M12 3c-4 0-8 4-8 8s8 10 8 10 8-6 8-10-4-8-8-8z"/><circle cx="12" cy="11" r="2"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-show">09:30 – 09:45 <span class="show-badge">SHOW</span></div>
+    <div class="card-title">Show Nàng Tiên Cá</div>
+    <div class="card-desc">Vũ điệu dưới nước của mỹ nhân ngư. Check-in chụp ảnh sau show.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-show"></div>
-<div class="time-badge">16:30 – 17:00</div>
-<p class="item-title">Princess Tata's All-Star Parade</p>
-<p class="item-desc">Diễu hành nhân vật cổ tích từ Quảng trường Thần Thoại → Quảng trường Đại Dương. Nên chọn vị trí sớm.</p>
-</div>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info">Ở nguyên — show kế tiếp cùng bể</div></div>
 
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">17:00 – 18:00</div>
-<p class="item-title">Vinpearl Harbour — Dạo phố & ngắm hoàng hôn</p>
-<p class="item-desc">Tản bộ khu phố thương mại phong cách châu Âu, uống café Là Việt hoặc Katinat view vịnh biển. Ngắm hoàng hôn tuyệt đẹp từ bến cảng.</p>
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-show"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><path d="M2 20c2-4 5-7 10-7s8 3 10 7"/><circle cx="12" cy="8" r="4"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-show">10:00 – 10:15 <span class="show-badge">SHOW</span></div>
+    <div class="card-title">Show cho cá ăn</div>
+    <div class="card-desc">Thợ lặn cho 30.000+ sinh vật biển ăn. Cùng khu vực thủy cung.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-food"></div>
-<div class="time-badge">18:00 – 18:45</div>
-<p class="item-title">Ăn tối — Vinpearl Harbour</p>
-<p class="item-desc">Gợi ý: Thanh Sương (hải sản tươi sống), Lúa Restaurant (Việt Nam), hoặc Kohaku Ramen (Nhật). Nên đặt bàn trước.</p>
-</div>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info">Tiếp tục trong thủy cung</div></div>
 
-<div class="item"><div class="dot dot-show"></div>
-<div class="time-badge">19:00 – 19:15</div>
-<p class="item-title">Show nhạc nước</p>
-<p class="item-desc">Sân khấu nhạc nước 5.000 chỗ. Vòi phun xoay, đèn LED, âm thanh sống động. Nên ngồi khu trung tâm.</p>
-</div>
-
-<div class="item"><div class="dot dot-show"></div>
-<div class="time-badge">19:30 – 20:10</div>
-<p class="item-title">Tata Show / 3D Mapping</p>
-<p class="item-desc">Siêu phẩm thực cảnh đa phương tiện tại Quảng trường Thần Thoại. 170 diễn viên, laser 3D mapping. Đỉnh cao của ngày.</p>
-</div>
-
-<div class="item"><div class="dot dot-move"></div>
-<div class="time-badge">20:30</div>
-<p class="item-title">Về resort nghỉ ngơi</p>
-<p class="item-desc">Dạo Harbour buổi tối nếu còn sức, hoặc về phòng thư giãn.</p>
-</div>
-
-</div>
-</div>
-
-<div class="day-panel" id="day1">
-<p class="day-label">Sáng thứ 6 — World Garden & thong thả</p>
-<p class="day-sub">Buffet sáng → Vườn thực vật 5 châu → Về đất liền</p>
-
-<div class="timeline">
-
-<div class="item"><div class="dot dot-food"></div>
-<div class="time-badge">07:00 – 08:15</div>
-<p class="item-title">Buffet sáng tại resort</p>
-<p class="item-desc">Bữa sáng buffet tại nhà hàng Lotus/Marina (6h–10h30). Thưởng thức ẩm thực 5 sao với view biển.</p>
-</div>
-
-<div class="item"><div class="dot dot-visit"></div>
-<div class="time-badge">08:15 – 08:45</div>
-<p class="item-title">Bãi biển resort & bể bơi</p>
-<p class="item-desc">Tản bộ bãi cát trắng, tắm biển sớm hoặc thư giãn bên hồ bơi. Chụp ảnh resort lúc vắng người.</p>
-</div>
-
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">09:00 – 10:00</div>
-<p class="item-title">World Garden — Cactus Land</p>
-<p class="item-desc">400+ loài xương rồng, bản đồ Việt Nam bằng 1.600 cây xương rồng — kỷ lục Việt Nam. Cây Baobab khổng lồ kiểu châu Phi. Sáng sớm ánh sáng đẹp, lý tưởng chụp ảnh.</p>
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">10:15 – 10:50</div>
+    <div class="card-title">Tham quan thủy cung (tiếp)</div>
+    <div class="card-desc">Royal Palace, Ocean Garden, khu bò sát. Gần 4.000m².</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">10:00 – 10:40</div>
-<p class="item-title">World Garden — Vườn Nhật Bản & Vườn Bướm</p>
-<p class="item-desc">Cổng torii, bonsai, hồ cá Koi, trà thất. Sau đó ghé Vườn Bướm — hàng trăm con bướm bay lượn như trong tranh cổ tích.</p>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~7 phút <span class="walk-route">Sea World → Fairy Land</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M12 22c4-4 8-7 8-12a8 8 0 10-16 0c0 5 4 8 8 12z"/><circle cx="12" cy="10" r="2"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">11:00 – 11:50</div>
+    <div class="card-title">Fairy Land — Khu cổ tích nhẹ nhàng</div>
+    <div class="card-desc">Carousel, rạp phim 4D, không gian cổ tích chụp ảnh.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-visit"></div>
-<div class="changed">
-<div class="time-badge">10:40 – 11:15</div>
-<p class="item-title">World Garden — Hoa 5 châu & check-in</p>
-<p class="item-desc">Dạo qua các khu vườn hoa theo từng châu lục. Mua quà lưu niệm tại shop gần đó trước khi rời đảo.</p>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~5 phút <span class="walk-route">Fairy Land → nhà hàng Coral</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-food"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-food">12:00 – 13:15</div>
+    <div class="card-title">Ăn trưa — Nhà hàng Coral</div>
+    <div class="card-desc">Buffet Á-Âu (11h–14h30). Hoặc Cơm Nhà Linh nếu thích món Việt.</div>
+  </div>
 </div></div>
 
-<div class="item"><div class="dot dot-move"></div>
-<div class="time-badge">11:30 – 12:00</div>
-<p class="item-title">Trả phòng & cáp treo về đất liền</p>
-<p class="item-desc">Check-out (hoặc gửi hành lý nếu checkout muộn). Lên cáp treo ngắm vịnh lần cuối, kết thúc hành trình.</p>
-</div>
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~12 phút <span class="walk-route">VinWonders → resort (hoặc xe điện)</span></div></div>
+
+<div class="section-divider">Chiều</div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-hotel"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="round"><path d="M3 21V7l9-4 9 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-hotel">13:30 – 14:30</div>
+    <div class="card-title">Check-in khách sạn Vinpearl</div>
+    <div class="card-desc">Nhận phòng 14h, nghỉ ngơi nạp năng lượng.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~15 phút <span class="walk-route">Resort → VinWonders → King's Garden</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-show"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><path d="M16 7c0 2.8-4 7-4 7s-4-4.2-4-7a4 4 0 018 0z"/><path d="M4 21c1-4 4-4 8-4s7 0 8 4"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-show">15:00 – 15:20 <span class="show-badge">SHOW</span></div>
+    <div class="card-title">Show chim — Vườn Quý Vương</div>
+    <div class="card-desc">10 tiết mục từ loài chim quý hiếm. Đến trước 14:50 chọn chỗ.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info">Ở nguyên — King's Garden liền kề sân khấu chim</div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M6.5 12a5.5 5.5 0 1011 0 5.5 5.5 0 00-11 0z"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">15:20 – 16:10</div>
+    <div class="card-title">King's Garden — Vườn thú mở</div>
+    <div class="card-desc">Hươu cao cổ, hồng hạc, hổ Bengal. Chiều mát, thú hoạt bát hơn.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~10 phút <span class="walk-route">King's Garden → Quảng trường Đại Dương</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-show"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><path d="M5 3l14 9-14 9V3z"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-show">16:30 – 17:00 <span class="show-badge">SHOW</span></div>
+    <div class="card-title">Tata's All-Star Parade</div>
+    <div class="card-desc">Diễu hành qua quảng trường. Đến trước 16:20 chọn vị trí.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~8 phút <span class="walk-route">Quảng trường → Vinpearl Harbour</span></div></div>
+
+<div class="section-divider">Tối</div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><rect x="9" y="13" width="6" height="8" rx="1"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">17:10 – 18:00</div>
+    <div class="card-title">Vinpearl Harbour — Dạo phố & hoàng hôn</div>
+    <div class="card-desc">Phố thương mại kiểu Âu, café Là Việt / Katinat view vịnh.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info">Ở nguyên — ăn tối tại Harbour</div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-food"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round"><path d="M12 5C5 5 2 9 2 12h20c0-3-3-7-10-7zM2 15h20M8 15v5M16 15v5"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-food">18:00 – 18:45</div>
+    <div class="card-title">Ăn tối — Vinpearl Harbour</div>
+    <div class="card-desc">Thanh Sương (hải sản), Lúa (Việt), Kohaku Ramen (Nhật). Đặt bàn trước.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~5 phút <span class="walk-route">Harbour → sân khấu nhạc nước</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-show"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><path d="M12 3c-2 3-6 5-6 9a6 6 0 1012 0c0-4-4-6-6-9z"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-show">19:00 – 19:15 <span class="show-badge">SHOW</span></div>
+    <div class="card-title">Show nhạc nước</div>
+    <div class="card-desc">Sân khấu 5.000 chỗ. Đến trước 18:50 chọn ghế trung tâm.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~3 phút <span class="walk-route">Quảng trường Đại Dương → Quảng trường Thần Thoại</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-show"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-show">19:30 – 20:10 <span class="show-badge">SHOW</span></div>
+    <div class="card-title">Tata Show / 3D Mapping</div>
+    <div class="card-desc">170 diễn viên, laser 3D mapping. Đỉnh cao của ngày.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~15 phút <span class="walk-route">VinWonders → resort (hoặc xe điện nội khu)</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-move"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zM12 7v5l3 3"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-move">~20:30</div>
+    <div class="card-title">Về resort nghỉ ngơi</div>
+    <div class="card-desc">Hoặc dạo Harbour buổi tối nếu còn sức.</div>
+  </div>
+</div></div>
 
 </div>
+
+<!-- ======= THỨ 6 ======= -->
+<div class="day" id="d1">
+
+<div class="day-header">
+  <div class="day-title">Sáng thứ 6</div>
+  <div class="day-desc">Buffet sáng → World Garden → Về đất liền</div>
 </div>
 
-<div class="note-box">
-<strong style="font-weight:500;">Lưu ý quan trọng:</strong><br>
-• Show chim có 2 suất: 11:00 và 15:00 — lịch trình chọn suất chiều 15h vì King's Garden đã dời sang chiều.<br>
-• Show tiên cá 9:30 và cho cá ăn 10:00 diễn cùng khu thủy cung — đến sớm từ 9h.<br>
-• Lịch show có thể thay đổi — gọi hotline 1900 6677 #1 trước chuyến đi.<br>
-• Khách resort được miễn phí cáp treo/canô và có thể dùng vé VinWonders nhiều lần.
+<div class="section-divider">Sáng sớm</div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-food"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-food">07:00 – 08:15</div>
+    <div class="card-title">Buffet sáng tại resort</div>
+    <div class="card-desc">Nhà hàng Lotus/Marina (6h–10h30), ẩm thực 5 sao view biển.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info">Ngay tại resort</div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2zM12 18h.01"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">08:15 – 08:45</div>
+    <div class="card-title">Bãi biển & bể bơi resort</div>
+    <div class="card-desc">Tắm biển sớm hoặc thư giãn bên hồ bơi.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~15 phút <span class="walk-route">Resort → VinWonders → World Garden</span></div></div>
+
+<div class="section-divider">World Garden</div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 5-4 5-4-3-4-5z"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">09:00 – 09:50</div>
+    <div class="card-title">Cactus Land</div>
+    <div class="card-desc">400+ loài xương rồng, bản đồ VN bằng 1.600 cây. Cây Baobab châu Phi. Sáng sớm ánh sáng đẹp.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~3 phút <span class="walk-route">Cùng trong World Garden</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M12 22c-4-4-8-7.5-8-12a8 8 0 1116 0c0 4.5-4 8-8 12z"/><path d="M9 11c0-1.7 1.3-3 3-3s3 1.3 3 3"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">10:00 – 10:35</div>
+    <div class="card-title">Vườn Nhật Bản & Vườn Bướm</div>
+    <div class="card-desc">Cổng torii, bonsai, hồ cá Koi, trà thất. Hàng trăm con bướm bay lượn.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~3 phút <span class="walk-route">Cùng trong World Garden</span></div></div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-visit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><path d="M12 2a9 9 0 00-9 9c0 3.9 2.5 7.2 6 8.5V22h6v-2.5c3.5-1.3 6-4.6 6-8.5a9 9 0 00-9-9z"/><path d="M9 14h6"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-visit">10:40 – 11:10</div>
+    <div class="card-title">Hoa 5 châu & mua quà</div>
+    <div class="card-desc">Vườn hoa theo châu lục. Mua lưu niệm tại shop gần đó.</div>
+  </div>
+</div></div>
+
+<div class="walk"><div class="walk-line"><div class="walk-line-inner"><div class="walk-dot"></div></div></div><div class="walk-info"><svg class="walk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1.5"/><path d="M9 22l1.5-7L9 12l1-5h4l1 5-1.5 3L15 22"/></svg>~15 phút <span class="walk-route">World Garden → resort → ga cáp treo</span></div></div>
+
+<div class="section-divider">Kết thúc</div>
+
+<div class="card"><div class="card-inner">
+  <div class="icon-col icon-move"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#888780" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+  <div class="card-body">
+    <div class="card-time time-move">11:30 – 12:00</div>
+    <div class="card-title">Trả phòng & cáp treo về đất liền</div>
+    <div class="card-desc">Check-out, lên cáp treo ngắm vịnh lần cuối.</div>
+  </div>
+</div></div>
+
 </div>
+
+<div class="info-card">
+  <strong>Thời gian đi bộ & lưu ý</strong>
+  <div class="info-item">Thời gian đi bộ tính theo tốc độ thong thả (~4km/h), có tính dốc và cầu thang.</div>
+  <div class="info-item">VinWonders rộng 50 ha — nên mang giày thoải mái, mang theo nước.</div>
+  <div class="info-item">Xe điện nội khu miễn phí cho khách resort (resort ↔ VinWonders), giúp tiết kiệm 10-15 phút.</div>
+  <div class="info-item">Mỗi show nên đến sớm 10 phút để chọn chỗ ngồi tốt.</div>
+  <div class="info-item">Lịch show có thể thay đổi — gọi 1900 6677 #1 trước chuyến đi.</div>
+</div>
+
 </div>
 
 <script>
-function showDay(i){
-  document.querySelectorAll('.tab').forEach((t,idx)=>{t.classList.toggle('active',idx===i);});
-  document.querySelectorAll('.day-panel').forEach((p,idx)=>{p.classList.toggle('active',idx===i);});
+function switchDay(i){
+  document.querySelectorAll('.tab-btn').forEach((t,idx)=>{t.classList.toggle('active',idx===i);});
+  document.querySelectorAll('.day').forEach((d,idx)=>{d.classList.toggle('active',idx===i);});
 }
 </script>
