@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đi Chơi Nha Trang</title>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Base ── */
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0f8ff;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0077b6, #00b4d8);
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      background: #023e8a;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      padding: 0.5rem 1rem;
+    }
+    nav a {
+      color: #caf0f8;
+      text-decoration: none;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+    nav a:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── Main content ── */
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* ── Hero / intro section ── */
+    .hero {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .hero h2 {
+      font-size: 1.8rem;
+      color: #0077b6;
+      margin-bottom: 1rem;
+    }
+    .hero p { font-size: 1rem; color: #555; }
+
+    /* ── Card grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .card h3 {
+      color: #0077b6;
+      margin-bottom: 0.5rem;
+      font-size: 1.15rem;
+    }
+    .card p { color: #555; font-size: 0.95rem; }
+
+    /* ── Footer ── */
+    footer {
+      background: #023e8a;
+      color: #caf0f8;
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    footer a { color: #90e0ef; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <h1>🌊 Đi Chơi Nha Trang</h1>
+    <p>Khám phá thành phố biển tuyệt đẹp</p>
+  </header>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav>
+    <a href="#gioi-thieu">Giới thiệu</a>
+    <a href="#dia-diem">Địa điểm</a>
+    <a href="#am-thuc">Ẩm thực</a>
+    <a href="#lien-he">Liên hệ</a>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <!-- Introduction -->
+    <section id="gioi-thieu" class="hero">
+      <h2>Chào mừng đến Nha Trang!</h2>
+      <p>
+        <!-- TODO: Paste your introduction content here -->
+        Nha Trang là thành phố biển nổi tiếng thuộc tỉnh Khánh Hòa, Việt Nam.
+        Với bãi biển xanh trong, khí hậu ôn hòa và ẩm thực phong phú,
+        Nha Trang là điểm đến lý tưởng cho mọi du khách.
+      </p>
+    </section>
+
+    <!-- Attraction cards -->
+    <section id="dia-diem">
+      <div class="cards">
+
+        <div class="card">
+          <h3>🏖️ Bãi Biển</h3>
+          <p>
+            <!-- TODO: Add your beach content here -->
+            Bãi biển Nha Trang dài hơn 6 km với cát trắng mịn và nước biển
+            trong xanh, lý tưởng cho tắm biển và thể thao nước.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>🏝️ Đảo</h3>
+          <p>
+            <!-- TODO: Add your island content here -->
+            Khám phá các hòn đảo xinh đẹp như Hòn Mun, Hòn Tằm,
+            Hòn Tre với rạn san hô đặc sắc và hải sản tươi ngon.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>🍜 Ẩm Thực</h3>
+          <p>
+            <!-- TODO: Add your food content here -->
+            Thưởng thức bún cá, nem nướng Ninh Hòa, bánh căn và hải sản
+            tươi sống — những đặc sản không thể bỏ qua khi đến Nha Trang.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Food section placeholder -->
+    <section id="am-thuc" class="hero">
+      <h2>🍽️ Ẩm thực Nha Trang</h2>
+      <p>
+        <!-- TODO: Paste your food & restaurant content here -->
+        Nội dung ẩm thực sẽ được cập nhật sớm.
+      </p>
+    </section>
+
+    <!-- Contact section placeholder -->
+    <section id="lien-he" class="hero">
+      <h2>📬 Liên hệ</h2>
+      <p>
+        <!-- TODO: Add your contact information here -->
+        Thông tin liên hệ sẽ được cập nhật sớm.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>&copy; 2024 Đi Chơi Nha Trang &mdash; Mọi quyền được bảo lưu.</p>
+  </footer>
+
+</body>
+</html>
