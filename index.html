@@ -1,200 +1,229 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Đi Chơi Nha Trang</title>
-  <style>
-    /* ── Reset ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<h2 class="sr-only">Lịch trình Vinpearl Nha Trang v3 — King's Garden chiều thứ 5, World Garden sáng thứ 6, bỏ vòng quay</h2>
+<style>
+.day-label{font-size:18px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px;}
+.day-sub{font-size:13px;color:var(--color-text-secondary);margin:0 0 16px;}
+.timeline{position:relative;padding-left:28px;margin:0 0 2rem;}
+.timeline::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:1.5px;background:var(--color-border-tertiary);}
+.item{position:relative;margin-bottom:18px;}
+.dot{position:absolute;left:-28px;top:4px;width:18px;height:18px;border-radius:50%;}
+.dot-show{background:#EEEDFE;border:1.5px solid #534AB7;}
+.dot-visit{background:#E1F5EE;border:1.5px solid #0F6E56;}
+.dot-food{background:#FAEEDA;border:1.5px solid #854F0B;}
+.dot-hotel{background:#E6F1FB;border:1.5px solid #185FA5;}
+.dot-move{background:#F1EFE8;border:1.5px solid #5F5E5A;}
+.time-badge{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:2px;}
+.item-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0;}
+.item-desc{font-size:13px;color:var(--color-text-secondary);margin:2px 0 0;line-height:1.5;}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 1.5rem;padding:12px 16px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary);}
+.legend-dot{width:10px;height:10px;border-radius:50%;}
+.note-box{background:var(--color-background-info);border-radius:var(--border-radius-md);padding:12px 16px;margin:0 0 1.5rem;font-size:13px;color:var(--color-text-info);line-height:1.6;}
+.tab-row{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1.5px solid var(--color-border-tertiary);}
+.tab{padding:8px 20px;font-size:14px;font-weight:500;color:var(--color-text-secondary);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;}
+.tab.active{color:#534AB7;border-bottom-color:#534AB7;}
+.tab:hover{color:var(--color-text-primary);}
+.day-panel{display:none;}
+.day-panel.active{display:block;}
+.changed{background:linear-gradient(90deg,rgba(83,74,183,0.06) 0%,transparent 100%);border-radius:var(--border-radius-md);padding:6px 8px;margin:-6px -8px;}
+</style>
 
-    /* ── Base ── */
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f0f8ff;
-      color: #1a1a2e;
-      line-height: 1.6;
-    }
+<div style="padding:1rem 0;">
+<div class="tab-row">
+  <button class="tab active" onclick="showDay(0)">Thứ 5</button>
+  <button class="tab" onclick="showDay(1)">Sáng thứ 6</button>
+</div>
 
-    /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, #0077b6, #00b4d8);
-      color: #fff;
-      text-align: center;
-      padding: 3rem 1rem 2rem;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      letter-spacing: 0.02em;
-      margin-bottom: 0.5rem;
-    }
-    header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#EEEDFE;border:1px solid #534AB7;"></div>Show diễn</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E1F5EE;border:1px solid #0F6E56;"></div>Tham quan</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FAEEDA;border:1px solid #854F0B;"></div>Ăn uống</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E6F1FB;border:1px solid #185FA5;"></div>Khách sạn</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F1EFE8;border:1px solid #5F5E5A;"></div>Di chuyển</div>
+  <div class="legend-item" style="margin-left:auto;"><span style="display:inline-block;width:10px;height:10px;background:rgba(83,74,183,0.12);border-radius:2px;"></span>Đã sửa</div>
+</div>
 
-    /* ── Navigation ── */
-    nav {
-      background: #023e8a;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-      padding: 0.5rem 1rem;
-    }
-    nav a {
-      color: #caf0f8;
-      text-decoration: none;
-      padding: 0.4rem 1rem;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      transition: background 0.2s;
-    }
-    nav a:hover { background: rgba(255,255,255,0.15); }
+<div class="day-panel active" id="day0">
+<p class="day-label">Thứ 5 — Ngày khám phá trọn vẹn</p>
+<p class="day-sub">Thủy cung + show sáng → King's Garden chiều → Show đêm</p>
 
-    /* ── Main content ── */
-    main {
-      max-width: 960px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+<div class="timeline">
 
-    /* ── Hero / intro section ── */
-    .hero {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-    .hero h2 {
-      font-size: 1.8rem;
-      color: #0077b6;
-      margin-bottom: 1rem;
-    }
-    .hero p { font-size: 1rem; color: #555; }
+<div class="item"><div class="dot dot-move"></div>
+<div class="time-badge">07:00 – 08:15</div>
+<p class="item-title">Ăn sáng & di chuyển ra bến cáp treo</p>
+<p class="item-desc">Ăn sáng tại thành phố, sau đó taxi/Grab đến ga cáp treo Vinpearl (Cầu Đá). Cáp treo mở từ 8:30.</p>
+</div>
 
-    /* ── Card grid ── */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    }
-    .card h3 {
-      color: #0077b6;
-      margin-bottom: 0.5rem;
-      font-size: 1.15rem;
-    }
-    .card p { color: #555; font-size: 0.95rem; }
+<div class="item"><div class="dot dot-move"></div>
+<div class="time-badge">08:30 – 09:00</div>
+<p class="item-title">Cáp treo vượt biển → Hòn Tre</p>
+<p class="item-desc">Trải nghiệm cáp treo 3,3km ngắm toàn cảnh vịnh Nha Trang. Tới đảo, gửi hành lý tại quầy.</p>
+</div>
 
-    /* ── Footer ── */
-    footer {
-      background: #023e8a;
-      color: #caf0f8;
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.9rem;
-    }
-    footer a { color: #90e0ef; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-  </style>
-</head>
-<body>
+<div class="item"><div class="dot dot-visit"></div>
+<div class="time-badge">09:00 – 09:25</div>
+<p class="item-title">Neptune's Kingdom — Vào thủy cung sớm</p>
+<p class="item-desc">Đi thẳng đến Vương Quốc Hải Thần. Khám phá hầm kính 360° dài 100m, hồ hải cẩu. Chọn vị trí đẹp trước bể chính.</p>
+</div>
 
-  <!-- ===== HEADER ===== -->
-  <header>
-    <h1>🌊 Đi Chơi Nha Trang</h1>
-    <p>Khám phá thành phố biển tuyệt đẹp</p>
-  </header>
+<div class="item"><div class="dot dot-show"></div>
+<div class="time-badge">09:30 – 09:45</div>
+<p class="item-title">Show Nàng Tiên Cá</p>
+<p class="item-desc">Vũ điệu dưới nước của các mỹ nhân ngư. 10 phút biểu diễn ấn tượng, check-in chụp ảnh cùng tiên cá sau show.</p>
+</div>
 
-  <!-- ===== NAVIGATION ===== -->
-  <nav>
-    <a href="#gioi-thieu">Giới thiệu</a>
-    <a href="#dia-diem">Địa điểm</a>
-    <a href="#am-thuc">Ẩm thực</a>
-    <a href="#lien-he">Liên hệ</a>
-  </nav>
+<div class="item"><div class="dot dot-show"></div>
+<div class="time-badge">10:00 – 10:15</div>
+<p class="item-title">Show cho cá ăn — Cung Điện Hải Vương</p>
+<p class="item-desc">Ngắm thợ lặn cho hơn 30.000 sinh vật biển ăn giữa lòng đại dương. Diễn ngay sau show tiên cá.</p>
+</div>
 
-  <!-- ===== MAIN ===== -->
-  <main>
+<div class="item"><div class="dot dot-visit"></div>
+<div class="time-badge">10:15 – 11:00</div>
+<p class="item-title">Tiếp tục tham quan thủy cung</p>
+<p class="item-desc">5 khu triển lãm: Royal Palace (cá rồng, Arapaima), Ocean Garden (cá Nemo), khu bò sát. Tổng diện tích gần 4.000m².</p>
+</div>
 
-    <!-- Introduction -->
-    <section id="gioi-thieu" class="hero">
-      <h2>Chào mừng đến Nha Trang!</h2>
-      <p>
-        <!-- TODO: Paste your introduction content here -->
-        Nha Trang là thành phố biển nổi tiếng thuộc tỉnh Khánh Hòa, Việt Nam.
-        Với bãi biển xanh trong, khí hậu ôn hòa và ẩm thực phong phú,
-        Nha Trang là điểm đến lý tưởng cho mọi du khách.
-      </p>
-    </section>
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">11:00 – 12:00</div>
+<p class="item-title">Fairy Land — Khu cổ tích nhẹ nhàng</p>
+<p class="item-desc">Carousel, rạp phim 4D, không gian cổ tích chụp ảnh. Dạo chơi thong thả trước giờ ăn trưa. Bỏ qua trò cảm giác mạnh.</p>
+</div></div>
 
-    <!-- Attraction cards -->
-    <section id="dia-diem">
-      <div class="cards">
+<div class="item"><div class="dot dot-food"></div>
+<div class="time-badge">12:00 – 13:15</div>
+<p class="item-title">Ăn trưa — Nhà hàng Coral (buffet)</p>
+<p class="item-desc">Buffet Á-Âu trong VinWonders, phục vụ 11h–14h30. Hoặc chọn Cơm Nhà Linh (cơm Việt trên mâm đồng) nếu thích món nhà.</p>
+</div>
 
-        <div class="card">
-          <h3>🏖️ Bãi Biển</h3>
-          <p>
-            <!-- TODO: Add your beach content here -->
-            Bãi biển Nha Trang dài hơn 6 km với cát trắng mịn và nước biển
-            trong xanh, lý tưởng cho tắm biển và thể thao nước.
-          </p>
-        </div>
+<div class="item"><div class="dot dot-hotel"></div>
+<div class="time-badge">13:30 – 14:30</div>
+<p class="item-title">Check-in khách sạn Vinpearl</p>
+<p class="item-desc">Di chuyển về resort, làm thủ tục nhận phòng 14h. Nghỉ ngơi, tắm rửa, nạp năng lượng cho buổi chiều-tối.</p>
+</div>
 
-        <div class="card">
-          <h3>🏝️ Đảo</h3>
-          <p>
-            <!-- TODO: Add your island content here -->
-            Khám phá các hòn đảo xinh đẹp như Hòn Mun, Hòn Tằm,
-            Hòn Tre với rạn san hô đặc sắc và hải sản tươi ngon.
-          </p>
-        </div>
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">14:45 – 15:00</div>
+<p class="item-title">Di chuyển đến King's Garden</p>
+<p class="item-desc">Đi từ resort đến khu Vườn Quý Vương, chuẩn bị vị trí xem show chim buổi chiều.</p>
+</div></div>
 
-        <div class="card">
-          <h3>🍜 Ẩm Thực</h3>
-          <p>
-            <!-- TODO: Add your food content here -->
-            Thưởng thức bún cá, nem nướng Ninh Hòa, bánh căn và hải sản
-            tươi sống — những đặc sản không thể bỏ qua khi đến Nha Trang.
-          </p>
-        </div>
+<div class="item"><div class="dot dot-show"></div>
+<div class="changed">
+<div class="time-badge">15:00 – 15:20</div>
+<p class="item-title">Show biểu diễn chim — Vườn Quý Vương</p>
+<p class="item-desc">10 tiết mục với các loài chim quý hiếm. Suất chiều 15h thường vắng hơn suất sáng, dễ chọn chỗ đẹp.</p>
+</div></div>
 
-      </div>
-    </section>
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">15:20 – 16:20</div>
+<p class="item-title">King's Garden — Vườn thú mở</p>
+<p class="item-desc">Gặp hươu cao cổ, hồng hạc, hổ Bengal, hà mã. Cho hươu cao cổ ăn — trải nghiệm không nên bỏ lỡ. Chiều mát, động vật cũng hoạt bát hơn.</p>
+</div></div>
 
-    <!-- Food section placeholder -->
-    <section id="am-thuc" class="hero">
-      <h2>🍽️ Ẩm thực Nha Trang</h2>
-      <p>
-        <!-- TODO: Paste your food & restaurant content here -->
-        Nội dung ẩm thực sẽ được cập nhật sớm.
-      </p>
-    </section>
+<div class="item"><div class="dot dot-show"></div>
+<div class="time-badge">16:30 – 17:00</div>
+<p class="item-title">Princess Tata's All-Star Parade</p>
+<p class="item-desc">Diễu hành nhân vật cổ tích từ Quảng trường Thần Thoại → Quảng trường Đại Dương. Nên chọn vị trí sớm.</p>
+</div>
 
-    <!-- Contact section placeholder -->
-    <section id="lien-he" class="hero">
-      <h2>📬 Liên hệ</h2>
-      <p>
-        <!-- TODO: Add your contact information here -->
-        Thông tin liên hệ sẽ được cập nhật sớm.
-      </p>
-    </section>
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">17:00 – 18:00</div>
+<p class="item-title">Vinpearl Harbour — Dạo phố & ngắm hoàng hôn</p>
+<p class="item-desc">Tản bộ khu phố thương mại phong cách châu Âu, uống café Là Việt hoặc Katinat view vịnh biển. Ngắm hoàng hôn tuyệt đẹp từ bến cảng.</p>
+</div></div>
 
-  </main>
+<div class="item"><div class="dot dot-food"></div>
+<div class="time-badge">18:00 – 18:45</div>
+<p class="item-title">Ăn tối — Vinpearl Harbour</p>
+<p class="item-desc">Gợi ý: Thanh Sương (hải sản tươi sống), Lúa Restaurant (Việt Nam), hoặc Kohaku Ramen (Nhật). Nên đặt bàn trước.</p>
+</div>
 
-  <!-- ===== FOOTER ===== -->
-  <footer>
-    <p>&copy; 2024 Đi Chơi Nha Trang &mdash; Mọi quyền được bảo lưu.</p>
-  </footer>
+<div class="item"><div class="dot dot-show"></div>
+<div class="time-badge">19:00 – 19:15</div>
+<p class="item-title">Show nhạc nước</p>
+<p class="item-desc">Sân khấu nhạc nước 5.000 chỗ. Vòi phun xoay, đèn LED, âm thanh sống động. Nên ngồi khu trung tâm.</p>
+</div>
 
-</body>
-</html>
+<div class="item"><div class="dot dot-show"></div>
+<div class="time-badge">19:30 – 20:10</div>
+<p class="item-title">Tata Show / 3D Mapping</p>
+<p class="item-desc">Siêu phẩm thực cảnh đa phương tiện tại Quảng trường Thần Thoại. 170 diễn viên, laser 3D mapping. Đỉnh cao của ngày.</p>
+</div>
+
+<div class="item"><div class="dot dot-move"></div>
+<div class="time-badge">20:30</div>
+<p class="item-title">Về resort nghỉ ngơi</p>
+<p class="item-desc">Dạo Harbour buổi tối nếu còn sức, hoặc về phòng thư giãn.</p>
+</div>
+
+</div>
+</div>
+
+<div class="day-panel" id="day1">
+<p class="day-label">Sáng thứ 6 — World Garden & thong thả</p>
+<p class="day-sub">Buffet sáng → Vườn thực vật 5 châu → Về đất liền</p>
+
+<div class="timeline">
+
+<div class="item"><div class="dot dot-food"></div>
+<div class="time-badge">07:00 – 08:15</div>
+<p class="item-title">Buffet sáng tại resort</p>
+<p class="item-desc">Bữa sáng buffet tại nhà hàng Lotus/Marina (6h–10h30). Thưởng thức ẩm thực 5 sao với view biển.</p>
+</div>
+
+<div class="item"><div class="dot dot-visit"></div>
+<div class="time-badge">08:15 – 08:45</div>
+<p class="item-title">Bãi biển resort & bể bơi</p>
+<p class="item-desc">Tản bộ bãi cát trắng, tắm biển sớm hoặc thư giãn bên hồ bơi. Chụp ảnh resort lúc vắng người.</p>
+</div>
+
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">09:00 – 10:00</div>
+<p class="item-title">World Garden — Cactus Land</p>
+<p class="item-desc">400+ loài xương rồng, bản đồ Việt Nam bằng 1.600 cây xương rồng — kỷ lục Việt Nam. Cây Baobab khổng lồ kiểu châu Phi. Sáng sớm ánh sáng đẹp, lý tưởng chụp ảnh.</p>
+</div></div>
+
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">10:00 – 10:40</div>
+<p class="item-title">World Garden — Vườn Nhật Bản & Vườn Bướm</p>
+<p class="item-desc">Cổng torii, bonsai, hồ cá Koi, trà thất. Sau đó ghé Vườn Bướm — hàng trăm con bướm bay lượn như trong tranh cổ tích.</p>
+</div></div>
+
+<div class="item"><div class="dot dot-visit"></div>
+<div class="changed">
+<div class="time-badge">10:40 – 11:15</div>
+<p class="item-title">World Garden — Hoa 5 châu & check-in</p>
+<p class="item-desc">Dạo qua các khu vườn hoa theo từng châu lục. Mua quà lưu niệm tại shop gần đó trước khi rời đảo.</p>
+</div></div>
+
+<div class="item"><div class="dot dot-move"></div>
+<div class="time-badge">11:30 – 12:00</div>
+<p class="item-title">Trả phòng & cáp treo về đất liền</p>
+<p class="item-desc">Check-out (hoặc gửi hành lý nếu checkout muộn). Lên cáp treo ngắm vịnh lần cuối, kết thúc hành trình.</p>
+</div>
+
+</div>
+</div>
+
+<div class="note-box">
+<strong style="font-weight:500;">Lưu ý quan trọng:</strong><br>
+• Show chim có 2 suất: 11:00 và 15:00 — lịch trình chọn suất chiều 15h vì King's Garden đã dời sang chiều.<br>
+• Show tiên cá 9:30 và cho cá ăn 10:00 diễn cùng khu thủy cung — đến sớm từ 9h.<br>
+• Lịch show có thể thay đổi — gọi hotline 1900 6677 #1 trước chuyến đi.<br>
+• Khách resort được miễn phí cáp treo/canô và có thể dùng vé VinWonders nhiều lần.
+</div>
+</div>
+
+<script>
+function showDay(i){
+  document.querySelectorAll('.tab').forEach((t,idx)=>{t.classList.toggle('active',idx===i);});
+  document.querySelectorAll('.day-panel').forEach((p,idx)=>{p.classList.toggle('active',idx===i);});
+}
+</script>
